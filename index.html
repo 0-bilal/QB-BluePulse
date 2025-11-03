@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="نظام إدارة المسبح الذكي - QB-BluePulse">
+    <meta name="author" content="QB-BluePulse">
+    <title>QB-BluePulse</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="icon" href="./assets/ico/favicon.ico" />
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-section">
+            <div class="logo-icon">
+            <img src="./assets/ico/logo.png" alt="QB Logo" class="logo-img">
+        </div>
+
+            <div class="logo-text">
+                <div class="logo-title">QB-BluePulse</div>
+                <div class="logo-subtitle">نظام إدارة المسبح الذكي</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="header-btn" onclick="showNotifications()">
+                🔔
+                <span class="notification-badge" id="notificationBadge">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div class="main-content active" id="dashboardPage">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-icon">📋</span>
+                <div class="stat-number" id="totalTasks">16</div>
+                <div class="stat-label">إجمالي المهام</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">✅</span>
+                <div class="stat-number" id="completedTasks">0</div>
+                <div class="stat-label">مكتملة</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">⏳</span>
+                <div class="stat-number" id="pendingTasks">16</div>
+                <div class="stat-label">متبقية</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">📊</span>
+                <div class="stat-number" id="progressPercent">0%</div>
+                <div class="stat-label">الإنجاز</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-card">
+                <div class="progress-header">
+                    <div class="progress-title">التقدم الشهري</div>
+                    <div class="progress-value" id="progressText">0 / 16</div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="tasks-container" id="tasksList">
+            <!-- Tasks will be rendered here -->
+        </div>
+    </div>
+
+    <!-- Calculator Page -->
+    <div class="main-content" id="calculatorPage">
+        <div class="calculator-page">
+            <div class="pool-info-panel">
+                <div class="pool-info-title">💧 حجم المسبح</div>
+                <div class="pool-volume-box">
+                    <div class="volume-display" id="poolVolumeDisplay">29</div>
+                    <div class="volume-unit">طن (متر مكعب)</div>
+                </div>
+                <button class="edit-btn" onclick="showVolumeModal()">
+                    ✏️ تعديل حجم المسبح
+                </button>
+            </div>
+
+            <div class="chemical-card">
+                <div class="chemical-header">
+                    <div class="chemical-info">
+                        <div class="chemical-name">CLR 90</div>
+                        <div class="chemical-purpose">تعقيم وتطهير المسبح</div>
+                    </div>
+                    <div class="chemical-icon">💊</div>
+                </div>
+                <div class="dosage-grid">
+                    <div class="dosage-item">
+                        <div class="dosage-label">الجرعة الاعتيادية</div>
+                        <div class="dosage-amount">
+                            <span class="dosage-number" id="clr90Normal">75.4</span>
+                            <span class="dosage-unit">غرام</span>
+                        </div>
+                    </div>
+                    <div class="dosage-item">
+                        <div class="dosage-label">جرعة الصدمة</div>
+                        <div class="dosage-amount">
+                            <span class="dosage-number" id="clr90Shock">145</span>
+                            <span class="dosage-unit">غرام</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chemical-card">
+                <div class="chemical-header">
+                    <div class="chemical-info">
+                        <div class="chemical-name">TIRA POOL 40</div>
+                        <div class="chemical-purpose">مضاد الطحالب</div>
+                    </div>
+                    <div class="chemical-icon">🌿</div>
+                </div>
+                <div class="dosage-grid">
+                    <div class="dosage-item">
+                        <div class="dosage-label">الجرعة الأسبوعية</div>
+                        <div class="dosage-amount">
+                            <span class="dosage-number" id="tiraPool">69.6</span>
+                            <span class="dosage-unit">مل</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chemical-card">
+                <div class="chemical-header">
+                    <div class="chemical-info">
+                        <div class="chemical-name">CLEAR POWER</div>
+                        <div class="chemical-purpose">مادة تصفية الماء</div>
+                    </div>
+                    <div class="chemical-icon">💎</div>
+                </div>
+                <div class="dosage-grid">
+                    <div class="dosage-item">
+                        <div class="dosage-label">عند الحاجة</div>
+                        <div class="dosage-amount">
+                            <span class="dosage-number" id="clearPower">150.8</span>
+                            <span class="dosage-unit">مل</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Page -->
+    <div class="main-content" id="settingsPage">
+        <div class="settings-page">
+            <div class="settings-group">
+                <div class="settings-group-title">⚙️ إعدادات المسبح</div>
+                <div class="settings-row">
+                    <div class="settings-label">حجم المسبح</div>
+                    <div class="settings-value"><span id="poolVolumeSetting">29</span> طن</div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-label">إجمالي المهام</div>
+                    <div class="settings-value">16 مهمة</div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-label">المهام المكتملة</div>
+                    <div class="settings-value"><span id="completedTasksSetting">0</span> مهمة</div>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-group-title">📊 معدلات الاستهلاك</div>
+                <div class="settings-row">
+                    <div class="settings-label">CLR 90 (عادي)</div>
+                    <div class="settings-value">2.6 غ/طن</div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-label">CLR 90 (صدمة)</div>
+                    <div class="settings-value">5 غ/طن</div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-label">TIRA POOL 40</div>
+                    <div class="settings-value">2.4 مل/طن</div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-label">CLEAR POWER</div>
+                    <div class="settings-value">5.2 مل/طن</div>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-group-title">🔄 إعادة تعيين</div>
+                <button class="action-btn" onclick="resetAllTasks()">
+                    🗑️ إعادة تعيين جميع المهام
+                </button>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-group-title">ℹ️ معلومات النظام</div>
+                <div class="settings-row">
+                    <div class="settings-label">إصدار النظام</div>
+                    <div class="settings-value">v3.0</div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-label">تطوير</div>
+                    <div class="settings-value">QB-BluePulse</div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-label">سنة الإصدار</div>
+                    <div class="settings-value">2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Pool Volume -->
+    <div class="modal" id="volumeModal">
+        <div class="modal-panel">
+            <div class="modal-header">
+                <div class="modal-title">تعديل حجم المسبح</div>
+                <button class="modal-close-btn" onclick="closeVolumeModal()">✕</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">حجم المسبح بالطن (متر مكعب)</label>
+                <input type="number" class="form-input" id="volumeInput" placeholder="29" min="1" step="0.1">
+            </div>
+            <button class="form-submit" onclick="savePoolVolume()">
+                💾 حفظ التغييرات
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div class="modal" id="notificationModal">
+        <div class="modal-panel">
+            <div class="notification-modal-content">
+                <div class="notification-icon">🔔</div>
+                <div class="modal-title" style="text-align: center; margin-bottom: 20px;">ملخص المهام</div>
+                <div class="notification-stats">
+                    <div class="notification-stat-row">
+                        <span class="notification-stat-label">إجمالي المهام</span>
+                        <span class="notification-stat-value" id="notifTotal">16</span>
+                    </div>
+                    <div class="notification-stat-row">
+                        <span class="notification-stat-label">المهام المكتملة</span>
+                        <span class="notification-stat-value completed" id="notifCompleted">0</span>
+                    </div>
+                    <div class="notification-stat-row">
+                        <span class="notification-stat-label">المهام المتبقية</span>
+                        <span class="notification-stat-value pending" id="notifPending">16</span>
+                    </div>
+                    <div class="notification-stat-row">
+                        <span class="notification-stat-label">حجم المسبح</span>
+                        <span class="notification-stat-value" id="notifVolume">29 طن</span>
+                    </div>
+                </div>
+                <button class="modal-btn primary" style="width: 100%; margin-top: 20px;" onclick="closeNotificationModal()">
+                    حسناً
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div class="modal" id="resetModal">
+        <div class="modal-panel">
+            <div class="reset-modal-content">
+                <div class="warning-icon">⚠️</div>
+                <div class="modal-title" style="text-align: center; margin-bottom: 10px; color: var(--danger);">تحذير!</div>
+                <div class="warning-message">
+                    هل أنت متأكد من إعادة تعيين جميع المهام؟
+                    <br><br>
+                    <strong>سيتم حذف جميع المهام المكتملة ولن يمكن التراجع عن هذا الإجراء.</strong>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" onclick="closeResetModal()">
+                        إلغاء
+                    </button>
+                    <button class="modal-btn confirm" onclick="confirmReset()">
+                        تأكيد الحذف
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week Selector Modal -->
+    <div class="modal" id="weekModal">
+        <div class="modal-panel">
+            <div class="modal-header">
+                <div class="modal-title">اختر الأسبوع</div>
+                <button class="modal-close-btn" onclick="closeWeekModal()">✕</button>
+            </div>
+            <div class="week-selector-grid">
+                <div class="week-option" data-week="all" onclick="selectWeek('all')">
+                    <div class="week-option-icon">🗓️</div>
+                    <div class="week-option-text">جميع الأسابيع</div>
+                    <div class="week-option-count">16 مهمة</div>
+                </div>
+                <div class="week-option" data-week="1" onclick="selectWeek('1')">
+                    <div class="week-option-icon">1️⃣</div>
+                    <div class="week-option-text">الأسبوع الأول</div>
+                    <div class="week-option-count">4 مهام</div>
+                </div>
+                <div class="week-option" data-week="2" onclick="selectWeek('2')">
+                    <div class="week-option-icon">2️⃣</div>
+                    <div class="week-option-text">الأسبوع الثاني</div>
+                    <div class="week-option-count">4 مهام</div>
+                </div>
+                <div class="week-option" data-week="3" onclick="selectWeek('3')">
+                    <div class="week-option-icon">3️⃣</div>
+                    <div class="week-option-text">الأسبوع الثالث</div>
+                    <div class="week-option-count">4 مهام</div>
+                </div>
+                <div class="week-option" data-week="4" onclick="selectWeek('4')">
+                    <div class="week-option-icon">4️⃣</div>
+                    <div class="week-option-text">الأسبوع الرابع</div>
+                    <div class="week-option-count">4 مهام</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchPage('dashboard')">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">الرئيسية</div>
+        </div>
+        <div class="nav-item" onclick="showWeekSelector()">
+            <div class="nav-icon">📅</div>
+            <div class="nav-label">الأسابيع</div>
+        </div>
+        <div class="nav-item" onclick="switchPage('calculator')">
+            <div class="nav-icon">🧮</div>
+            <div class="nav-label">الحاسبة</div>
+        </div>
+        <div class="nav-item" onclick="switchPage('settings')">
+            <div class="nav-icon">⚙️</div>
+            <div class="nav-label">الإعدادات</div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="./assets/js/storage.js"></script>
+    <script src="./assets/js/app.js"></script>
+</body>
+</html>
